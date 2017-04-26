@@ -1,0 +1,402 @@
+/*
+Theme Name: SWO
+Theme URI: http://www.foreverrip.com
+Author: Trenza Softwares
+Author URI: http://www.trenzasoft.com
+Description: The ForeverRip theme for WordPress.
+Version: 1.0
+-------------------------------------------------------------- */
+/*Css Wp*/
+a,a:focus{outline: none;}
+.alignnone{margin:5px 20px 20px 0;}
+.aligncenter,div.aligncenter{display:block;margin:5px auto 5px auto;}
+.alignright{float:right;margin:5px 0 20px 20px;}
+.alignleft{float:left;margin:5px 20px 20px 0;}
+.aligncenter{display:block;margin:5px auto 5px auto;}
+a img.alignright{float:right;margin:5px 0 20px 20px;}
+a img.alignnone{margin:5px 20px 20px 0;}
+a img.alignleft{float:left;margin:5px 20px 20px 0;}
+a img.aligncenter{display:block;margin-left:auto;margin-right:auto}
+.wp-caption{background:#fff;border:1px solid #f0f0f0;max-width:96%;padding:5px 3px 10px;text-align:center;}
+.wp-caption.alignnone{margin:5px 20px 20px 0;}
+.wp-caption.alignleft{margin:5px 20px 20px 0;}
+.wp-caption.alignright{margin:5px 0 20px 20px;}
+.wp-caption img{border:0 none;height:auto;margin:0;max-width:98.5%;padding:0;width:auto;}
+.wp-caption p.wp-caption-text{font-size:11px;line-height:17px;margin:0;padding:0 4px 5px;}
+strong{font-weight:bold;}
+em{font-style:italic;}
+img{border: none; max-width: 100%; height: auto; vertical-align: top;}
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+     user-select: none;
+    }
+/**
+ * 1.0 - Reset
+ *
+ * Resetting and rebuilding styles have been helped along thanks to the fine work of
+ * Eric Meyer http://meyerweb.com/eric/tools/css/reset/index.html
+ * along with Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
+ * and Blueprint http://www.blueprintcss.org/
+ */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+html {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 62.5%;
+	overflow-y: scroll;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+*,
+*:before,
+*:after {
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+}
+
+body {
+	background: #f1f1f1; 
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+nav,
+section {
+	display: block;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+caption,
+th,
+td {
+	font-weight: normal;
+	text-align: left;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: "";
+}
+
+blockquote,
+q {
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	quotes: none;
+}
+
+a:focus {
+	outline: 0px solid #c1c1c1;
+	outline: 0px solid rgba(51, 51, 51, 0.3);
+}
+b{font-weight: 600;}
+a:hover,
+a:active {
+	outline: 0;
+}
+
+a img {
+	border: 0;
+}
+ul,
+ol {
+	margin: 0 0 1.6em 1.3333em;
+}
+
+ul {
+	list-style: disc;
+}
+
+ol {
+	list-style: decimal;
+}
+::-webkit-input-placeholder { opacity: 1;}
+:-moz-placeholder           { opacity: 1;}
+::-moz-placeholder          { opacity: 1;}
+:-ms-input-placeholder      { opacity: 1;}
+/**
+ * 9.0 Clearings
+ */
+
+.clear:before,
+.clear:after,
+.site:before,
+.site:after,
+.entry-content:before,
+.entry-content:after,
+.comment-content:before,
+.comment-content:after,
+.site-content:before,
+.site-content:after,
+.nav-links:before,
+.nav-links:after,
+.comment-navigation:before,
+.comment-navigation:after,
+.social-navigation ul:before,
+.social-navigation ul:after,
+.textwidget:before,
+.textwidget:after {
+	content: "";
+	display: table;
+}
+
+.clear:after,
+.site:after,
+.entry-content:after,
+.comment-content:after,
+.site-content:after,
+.nav-links:after,
+.comment-navigation:after,
+.social-navigation ul:after,
+.textwidget:after {
+	clear: both;
+}
+
+.text-center{text-align: center;}
+.list-inline li{display: inline-block;}
+.list-unstyle li{list-style-type: none;}
+.list-unstyle, .list-inline{margin: 0; padding: 0;}
+
+html {font-size: 1em;}
+
+body {
+  background-color: white;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #333;
+}
+
+p {margin-bottom: 1.3em;}
+
+h1, h2, h3, h4 {
+  margin: 1.414em 0 0.5em;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.998em;
+}
+
+h2 {font-size: 2.827em;}
+
+h3 {font-size: 1.999em;}
+
+h4 {font-size: 1.414em;}
+
+small, .font_small {font-size: 0.707em;}
+
+
+/* ---------------  Custom CSS  -------------*/
+/* default class */
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+li{list-style: none}
+li a{text-decoration: none;font-family: sans-serif;font-size: 14px;}
+*{font-family: sans-serif;font-size: 14px}
+nav ul li{float: left;padding: 0 20px;}
+.btn-red{width: 100px;background: red;border: 0;padding: 2px 0px;color: #fff;}
+.red{color:red;}
+.hidden{overflow:hidden;}
+table thead tr td h3 {
+	color: white;
+	font-size: 14px;
+	padding: 0 10px;
+	margin: 10px 0px;
+}
+.right{float: right!important;}
+.left{float: left;}
+.bl{display: block;}
+.in-bl{display: inline-block;}
+.none{display: none}
+a{text-decoration: none}
+.button_to_text{background: rgba(102, 51, 153, 0);
+border: rgba(102, 51, 153, 0);}
+.green{color: #056D55;}
+.pointer{cursor:pointer;}
+.underline{text-decoration: underline;}
+/* custom css start*/
+.wrapper{max-width: 1110px;padding: 0 15px;margin: 0 auto;}
+.full-wrapper{width:100%;}
+header.site-main{background: black;border-bottom: 2px solid red;}
+nav{margin-top: 30px;margin-bottom: 5px;}
+nav ul{}
+nav ul li{float: left;padding: 0 20px;}
+nav ul li a{color:red;font-size: 18px}
+nav ul li a:hover{}
+.login-btn{
+	width: 90px;
+    margin-right: 20px;
+    border-radius: 5px;
+    background: rgba(255, 0, 0, 0);
+    color: red;
+    border: 1px solid red;
+    font-size: 13px;
+    padding: 2px 0;}
+.login p{color:red;margin: 15px 0 6px;}
+.footer{
+	margin-top: 40px
+}
+/* Product Template*/
+.entry-content.wrapper {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.product{background: #f6f6f6;padding: 20px 0 50px 0;}
+.add-product p {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+.add-product.wrapper input,.add-product.wrapper button {
+    width: 96%;
+}
+.add-product p {
+    font-size: 12px;
+    margin-bottom: 0;
+    color: green
+}
+.product table{
+	width:100%;
+}
+.add-product table td {
+    padding-top: 10px;
+}
+.product-view{background: #D9D9DA;padding: 20px 0 50px 0;}
+.view-product-left.left > img {
+  width: 60%;
+  float: right;
+margin-right: 20px;
+margin-top: 87px;
+}
+.view-product-right{width: 80%}
+.view-product-right table thead {
+	background: #056D55;
+}
+.view-product-right table thead tr td h3 {
+    
+}
+.view-product-right table tbody tr td h3 {
+    color: #056D55;
+	font-size: 12px;
+	padding: 0 10px;
+	margin: 10px 0px;
+}
+
+.view-product-left.left {
+	width: 20%;
+}
+.view-product-right table {
+  display: block;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.view-product-right.left > table {
+    background: #fff none repeat scroll 0 0;
+}
+#upload-test-img-link,#upload-image-img-link{
+	width: 60px;
+    float: left;
+    margin-right: 10px
+}
+#upload-test,#upload-image{
+	float: left;
+    width: 23%;
+}
+
+/* Woocommerce */
+.woocommerce-account .woocommerce-MyAccount-navigation ul li {
+    display:block;
+    float:none;
+}
+
+
+/* Responsive*/
+@media screen and (max-width: 1348px){
+
+}
+@media screen and (max-width: 1280px){
+	
+}
+@media screen and (max-width: 1140px){
+	
+}
+@media screen and (max-width: 1024px){
+	
+}
+@media screen and (max-width: 960px){
+	
+}
+
+@media screen and (max-width: 800px){
+	
+}
+
+@media screen and (max-width: 496px){
+	
+}
+
+@media screen and (max-width: 360px){
+	
+}
+
+@media screen and (max-width: 321px){
+	
+}
+
+/* table */
+/* Don't type any css bellow this css*/
+.view-product-right table, .view-product-right td{
+    border-collapse: separate;
+    border-left: 1px solid #9bbdb3;
+    border-bottom: 1px solid #9bbdb3;
+}​

@@ -1,3 +1,6 @@
+<?php  
+cart_submit();
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
 <head>
@@ -38,8 +41,27 @@
     </nav>
 
     <div class="login right in-bl">
-      <p>Are you a producer? Click below to sign in.</p>
-      <button class="login-btn right">Login</button>
+    <?php global $current_user;
+      get_currentuserinfo();
+
+      $user_login =$current_user->user_login;
+      $user_level =$current_user->user_level;
+      $user_firstname =$current_user->user_firstname;
+      $user_lastname =$current_user->user_lastname;
+      $display_name =$current_user->display_name;
+      $user_id =$current_user->ID;
+?>
+    <?php  
+      if ( is_user_logged_in() ) {
+        echo '<p>Hello, '.$user_login.'</p>
+      <a class="login-btn right" href="'.wp_logout_url( get_permalink() ).'">Logout</a>';
+      } else {?>
+        <p>Are you a producer? Click below to sign in.</p>
+      <a class="login-btn right" href="<?php echo bloginfo('template_url') ?>/my-account/">Login</a>
+      <?php
+      }
+    ?>
+      
     </div>
   </div>
 </header>

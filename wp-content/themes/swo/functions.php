@@ -1,4 +1,19 @@
 <?php 
+add_action( 'wp_logout', 'auto_redirect_external_after_logout');
+function auto_redirect_external_after_logout(){
+ /* wp_redirect("bloginfo('template_url')");
+  exit();*/
+}
+//remove_role( 'vender');
+add_role( 'vendor', 'Vendor');
+if ( current_user_can('vendor') && !current_user_can('upload_files') )
+add_action('admin_init', 'allow_new_role_uploads');
+function allow_new_role_uploads() {
+
+    $new_role = get_role('vendor');
+
+    $new_role->add_cap('delete_published_posts');
+}
 function trenza_theme_setup() {
     add_theme_support( 'post-thumbnails' );
     // Add default posts and comments RSS feed links to head.
@@ -181,20 +196,23 @@ function save_product(){
     if ($_POST['action'] == "new_post" || $_POST['action'] == "update_post") {
     # Do some minor form validation to make sure there is content 
     if ($_POST['action'] == "new_post"){
-    	echo $edit = 0;
+    	$edit = 0;
     }
 
     if ($_POST['action'] == "update_post"){
-    	echo $edit = 1;
+    	$edit = 1;
     	$id = $_POST['post_id'];
     }
 
 
-    if (isset ($_POST['p-type'])) {
-        $p_type =  $_POST['p-type'];
-    } 
-    if (isset ($_POST['s-name'])) {
+    if (isset ($_POST['p-type']) && strlen(trim($_POST['p-type'])) > 0) {
+        $p_type =  $_POST['p-type'];	
+    }else{$_SESSION["p_type"] = 0;} 
+
+    if (isset ($_POST['s-name']) && strlen(trim($_POST['s-name'])) > 0) {
         $s_name =  $_POST['s-name'];
+    }else{
+    	$_SESSION["s_name"] = 0;
     }
     if (isset ($_POST['thc-csb'])) {
         $thc_csb =  $_POST['thc-csb'];
@@ -216,26 +234,32 @@ function save_product(){
     }
 
     if ( !empty( $_POST['upload-image-id'] ) ) {
-		   echo $image_id = $_POST['upload-image-id'];
+		   $image_id = $_POST['upload-image-id'];
 	    }
 
     if ( !empty( $_POST['upload-test-id'] ) ) {
 	    	$test_id = $_POST['upload-test-id'];
 		}
 
-    if (isset ($_POST['price-per-unit'])) {
+    if (isset ($_POST['price-per-unit']) && strlen(trim($_POST['ammount-of-units'])) > 0) {
+
         	$price_per_unit =  $_POST['price-per-unit'];
     }
-    else {
-       
+    else{
+        		$_SESSION["price_per_unit"] = 0;
     }
-    if (isset ($_POST['ammount-of-units'])) {
+    if (isset ($_POST['ammount-of-units']) && strlen(trim($_POST['ammount-of-units'])) > 0) {
         	$ammount_of_units =  $_POST['ammount-of-units'];
+        	if($ammount_of_units == ''){
+        		$_SESSION["ammount_of_units"] = 0;
+        	}
     }
     else {
        
     }
-
+    if( $ammount_of_units == '' || $price_per_unit == '' || $s_name == '' || $p_type == '' ){
+    	$_SESSION["error"] = 1;
+    }else{
     /*$new_post = array(
     'post_title'               => $p_type,
     'status'             => true,
@@ -260,16 +284,17 @@ function save_product(){
 	
     //save the new post
     if ($edit == 0) {
-    	echo 'add';
+    	//echo 'add';
     	$post = array(
         'post_title'    => $s_name,
         'post_content'  => '',
+        'post_author'	=> get_current_user_id(),
         'post_status'   => 'publish',           // Choose: publish,Pending, preview, future, draft, etc.
         'post_type' => 'product'  //'post',page' or use a custom post type if you want to
     	);
     	$pid = wp_insert_post($post); 
 	}else if($edit == 1){
-		echo 'update'.$id;
+		//echo 'update'.$id;
 		$post = array(
 			'ID' =>$id,
         'post_title'    => $s_name,
@@ -294,7 +319,7 @@ function save_product(){
 	    add_post_meta($pid, 'I_S_H',$indica_sativa);
 	    add_post_meta($pid, 'Test',$test_id);
 	    add_post_meta($pid, 'Amount_Of_Units',$ammount_of_units);
-	     echo 'Thank you for sharing your story.';
+	      wp_redirect(get_home_url() .'/product/?msg=added');exit;
     }
     }else if($edit == 1){
     	if ($pid) {
@@ -305,26 +330,49 @@ function save_product(){
 	    update_post_meta($pid, 'I_S_H',$indica_sativa);
 	    update_post_meta($pid, 'Test',$test_id);
 	    update_post_meta($pid, 'Amount_Of_Units',$ammount_of_units);
-	     echo 'Thank you for sharing your story.';
+	     wp_redirect(get_home_url() .'/product/?action=edit&post_id='.$pid.'&msg=update');exit;
     }
     }
     
-    die();
-    //insert taxonomies
+    }
     }
 }
 
      if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) &&  $_POST['action'] == "delete") {
-     	echo $post_id = $_POST['post_id'];
-     	echo 'delete';
+     	$post_id = $_POST['post_id'];
+     	
      	$delete = wp_delete_post($post_id,true);
      	if($delete){
-     		echo 'successfully deleted.';
+     		 wp_redirect(get_home_url() .'/product/?msg=deleted');exit;
      	}
      }
      global $edit;
 
-     
+
+     if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] &&$_POST['action'] == "checkout_submite" ) ) {
+     	/*echo 'hello';
+     	exit();*/
+     	
+     	$str = stripslashes($_POST['checkout']);
+		$mstr = explode(",",$str);
+		$a = array();
+		foreach($mstr as $nstr )
+		{
+		    $narr = explode("=>",$nstr);
+			$narr[0] = str_replace("\x98","",$narr[0]);
+			$ytr[1] = $narr[1];
+			$a[$narr[0]] = $ytr[1];
+
+		}
+
+
+		foreach ($a as $key => $val) { 
+			//echo $key;
+			
+		}
+			
+
+     }
    
 }
 
@@ -338,4 +386,154 @@ function enqueue_media_uploader()
 
 add_action("wp_enqueue_scripts", "enqueue_media_uploader");
 
+function my_init() {
+	if (!is_admin()) {
+		wp_enqueue_script('jquery');
+	}
+
+	if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] &&$_POST['action'] == "checkout_submit" ) ) {
+     	/*echo 'hello';
+     	exit();*/
+
+     	global $woocommerce;	
+     	//print_r($woocommerce);
+     	$woocommerce->cart->empty_cart(); 
+     	$str = stripslashes($_POST['checkout']);
+		$mstr = explode(",",$str);
+		$a = array();
+		foreach($mstr as $nstr )
+		{
+		    $narr = explode("=>",$nstr);
+			$narr[0] = str_replace("\x98","",$narr[0]);
+			$ytr[1] = $narr[1];
+			$a[$narr[0]] = $ytr[1];
+
+		}
+
+		$cart_item_data['name'] = $_POST["order_name"];
+		$cart_item_data['olcc'] = $_POST["order_olcc"];
+		$cart_item_data['phone'] = $_POST["order_phone"];
+		//print_r($a);
+		foreach ($a as $key => $val) { 
+			//$woocommerce->cart->add_to_cart($key,$val,$variation_id = 0, $variation = array(), $cart_item_data);	
+			//echo $key;
+			//exit();
+			/*
+			echo '-'.$key.'-';
+			$woocommerce->cart->add_to_cart(107);	
+			*/
+			
+		}
+     //wp_redirect( WC()->cart->get_checkout_url() );
+     //exit();
+     /*global $woocommerce;
+	    $items = $woocommerce->cart->get_cart();
+	    echo '<pre>';
+	    //print_r($items);
+	    echo '</pre>';
+
+	        foreach($items as $item => $values) { 
+	        	echo $values["name"];
+	            $_product = $values['data']->post; 
+	            echo "<b>".$_product->post_title.'</b>  <br> Quantity: '.$values['quantity'].'<br>'; 
+	            $price = get_post_meta($values['product_id'] , '_price', true);
+	            echo "  Price: ".$price."<br>";
+
+
+	        }*/ 
+}
+}
+function cart_submit(){
+	if(!empty( $_POST['action'] && $_POST['action'] == "checkout_submit" ) ) {
+      global $woocommerce;  
+      //print_r($woocommerce);
+      $woocommerce->cart->empty_cart(); 
+      $str = stripslashes($_POST['checkout']);
+    $mstr = explode(",",$str);
+    $a = array();
+    foreach($mstr as $nstr )
+    {
+        $narr = explode("=>",$nstr);
+      $narr[0] = str_replace("\x98","",$narr[0]);
+      $ytr[1] = $narr[1];
+      $a[$narr[0]] = $ytr[1];
+
+    }
+
+    $cart_item_data['name'] = $_POST["order_name"];
+    $cart_item_data['olcc'] = $_POST["order_olcc"];
+    $cart_item_data['phone'] = $_POST["order_phone"];
+    //print_r($a);
+    foreach ($a as $key => $val) { 
+      //$woocommerce->cart->add_to_cart(107);
+      $woocommerce->cart->add_to_cart($key,$val,$variation_id = 0, $variation = array(), $cart_item_data);  
+      //echo $key;
+      //exit();
+      /*
+      echo '-'.$key.'-';
+      $woocommerce->cart->add_to_cart(107); 
+      */
+      
+    }
+     wp_redirect( WC()->cart->get_checkout_url() );exit;
+     /*global $woocommerce;
+      $items = $woocommerce->cart->get_cart();
+      echo '<pre>';
+      //print_r($items);
+      echo '</pre>';
+
+          foreach($items as $item => $values) { 
+            echo $values["name"];
+              $_product = $values['data']->post; 
+              echo "<b>".$_product->post_title.'</b>  <br> Quantity: '.$values['quantity'].'<br>'; 
+              $price = get_post_meta($values['product_id'] , '_price', true);
+              echo "  Price: ".$price."<br>";
+
+
+          }*/ 
+}
+}
+add_action('init', 'my_init');
+/*
+add_action( 'woocommerce_review_order_after_order_total', 'my_custom_fields' );
+function my_custom_fields(){
+    global $woocommerce;
+	    $items = $woocommerce->cart->get_cart();
+	    echo '<pre>';
+	    //print_r($items);
+	    echo '</pre>';
+	    echo '<div>';
+	        foreach($items as $item => $values) { 
+	        	echo 'Name: '.$values["name"];
+	        	echo 'OLCC: '.$values["olcc"];
+	        	echo 'Phone: '.$values["phone"];
+
+	        }
+	    echo '</div>';
+
+}
+*/  
+add_action('woocommerce_after_checkout_billing_form', 'fields_before_order_details');
+//function
+function fields_before_order_details(){
+	global $woocommerce;
+	    $items = $woocommerce->cart->get_cart();
+	    echo '<pre>';
+	    //print_r($items);
+	    echo '</pre>';
+	    echo '<div class="custom-checkout-form"><ul>';
+	        foreach($items as $item => $values) { 
+	        	echo '<li>Name: '.$values["name"].'</li>';
+	        	echo '<li>OLCC: '.$values["olcc"].'</li>';
+	        	echo '<li>Phone: '.$values["phone"].'</li>';
+
+	        }
+	    echo '</ul></div>';
+}
+
+/*add_filter( 'woocommerce_billing_fields', 'my_optional_fields' );
+
+function my_optional_fields() {
+	echo 'helllo';
+}*/
 ?>

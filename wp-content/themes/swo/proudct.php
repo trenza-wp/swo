@@ -27,20 +27,6 @@
                 <?php 
                 $user_roles = $current_user->roles;
                 $user_role = array_shift($user_roles);
-
-                /*if ($user_role == 'administrator') {
-                echo 'Administrator';
-                } elseif ($user_role == 'editor') {
-                echo 'Editor';
-                } elseif ($user_role == 'author') {
-                echo 'Author';
-                } elseif ($user_role == 'contributor') {
-                echo 'Contributor';
-                } elseif ($user_role == 'subscriber') {
-                echo 'Subscriber';
-                } else {
-                echo '<strong>' . $user_role . '</strong>';
-                }*/
                 if ( in_array( 'vendor', (array) $user->roles ) ) : ?>
                 <?php the_content(); ?>
                 <a class="btn-red" href="<?php echo get_home_url(); ?>/product">Add Product</a>

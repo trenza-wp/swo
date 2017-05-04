@@ -291,10 +291,6 @@ $narr[0] = str_replace("\x98","",$narr[0]);
 $ytr[1] = $narr[1];
 $a[$narr[0]] = $ytr[1];
 }
-//print_r($a);
-/*echo '<pre>';
-print_r($a);
-echo '</pre>';*/
 ?>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

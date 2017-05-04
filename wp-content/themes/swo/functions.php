@@ -260,28 +260,6 @@ function save_product(){
     if( $ammount_of_units == '' || $price_per_unit == '' || $s_name == '' || $p_type == '' ){
     	$_SESSION["error"] = 1;
     }else{
-    /*$new_post = array(
-    'post_title'               => $p_type,
-    'status'             => true,
-    'post_status'   => 'publish',           
-    'post_type' => 'product',
-    'catalog_visibility' => 'visible',
-    'price'              => $price_per_unit,
-    'regular_price'      => $price_per_unit,
-    'sale_price'         => '',
-    'manage_stock'       => true,
-    'stock_quantity'     => $ammount_of_units,
-    'stock_status'       => 'instock',
-    /*
-    'backorders'         => 'no',
-    'downloadable'       => false,
-    'downloads'          => array(),
-    
-    'image_id'           => '',
-    'gallery_image_ids'  => array(),
-);*/
-
-	
     //save the new post
     if ($edit == 0) {
     	//echo 'add';
@@ -350,9 +328,6 @@ function save_product(){
 
 
      if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] &&$_POST['action'] == "checkout_submite" ) ) {
-     	/*echo 'hello';
-     	exit();*/
-     	
      	$str = stripslashes($_POST['checkout']);
 		$mstr = explode(",",$str);
 		$a = array();
@@ -364,14 +339,6 @@ function save_product(){
 			$a[$narr[0]] = $ytr[1];
 
 		}
-
-
-		foreach ($a as $key => $val) { 
-			//echo $key;
-			
-		}
-			
-
      }
    
 }
@@ -380,7 +347,6 @@ add_action( 'after_setup_theme', 'save_product' );
 
 function enqueue_media_uploader()
 {
-    //this function enqueues all scripts required for media uploader to work
     wp_enqueue_media();
 }
 
@@ -390,63 +356,11 @@ function my_init() {
 	if (!is_admin()) {
 		wp_enqueue_script('jquery');
 	}
-
-	if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] &&$_POST['action'] == "checkout_submit" ) ) {
-     	/*echo 'hello';
-     	exit();*/
-
-     	global $woocommerce;	
-     	//print_r($woocommerce);
-     	$woocommerce->cart->empty_cart(); 
-     	$str = stripslashes($_POST['checkout']);
-		$mstr = explode(",",$str);
-		$a = array();
-		foreach($mstr as $nstr )
-		{
-		    $narr = explode("=>",$nstr);
-			$narr[0] = str_replace("\x98","",$narr[0]);
-			$ytr[1] = $narr[1];
-			$a[$narr[0]] = $ytr[1];
-
-		}
-
-		$cart_item_data['name'] = $_POST["order_name"];
-		$cart_item_data['olcc'] = $_POST["order_olcc"];
-		$cart_item_data['phone'] = $_POST["order_phone"];
-		//print_r($a);
-		foreach ($a as $key => $val) { 
-			//$woocommerce->cart->add_to_cart($key,$val,$variation_id = 0, $variation = array(), $cart_item_data);	
-			//echo $key;
-			//exit();
-			/*
-			echo '-'.$key.'-';
-			$woocommerce->cart->add_to_cart(107);	
-			*/
-			
-		}
-     //wp_redirect( WC()->cart->get_checkout_url() );
-     //exit();
-     /*global $woocommerce;
-	    $items = $woocommerce->cart->get_cart();
-	    echo '<pre>';
-	    //print_r($items);
-	    echo '</pre>';
-
-	        foreach($items as $item => $values) { 
-	        	echo $values["name"];
-	            $_product = $values['data']->post; 
-	            echo "<b>".$_product->post_title.'</b>  <br> Quantity: '.$values['quantity'].'<br>'; 
-	            $price = get_post_meta($values['product_id'] , '_price', true);
-	            echo "  Price: ".$price."<br>";
-
-
-	        }*/ 
 }
-}
+add_action('init', 'my_init');
 function cart_submit(){
 	if(!empty( $_POST['action'] && $_POST['action'] == "checkout_submit" ) ) {
       global $woocommerce;  
-      //print_r($woocommerce);
       $woocommerce->cart->empty_cart(); 
       $str = stripslashes($_POST['checkout']);
     $mstr = explode(",",$str);
@@ -459,81 +373,26 @@ function cart_submit(){
       $a[$narr[0]] = $ytr[1];
 
     }
-
     $cart_item_data['name'] = $_POST["order_name"];
     $cart_item_data['olcc'] = $_POST["order_olcc"];
     $cart_item_data['phone'] = $_POST["order_phone"];
-    //print_r($a);
     foreach ($a as $key => $val) { 
-      //$woocommerce->cart->add_to_cart(107);
       $woocommerce->cart->add_to_cart($key,$val,$variation_id = 0, $variation = array(), $cart_item_data);  
-      //echo $key;
-      //exit();
-      /*
-      echo '-'.$key.'-';
-      $woocommerce->cart->add_to_cart(107); 
-      */
-      
     }
      wp_redirect( WC()->cart->get_checkout_url() );exit;
-     /*global $woocommerce;
-      $items = $woocommerce->cart->get_cart();
-      echo '<pre>';
-      //print_r($items);
-      echo '</pre>';
-
-          foreach($items as $item => $values) { 
-            echo $values["name"];
-              $_product = $values['data']->post; 
-              echo "<b>".$_product->post_title.'</b>  <br> Quantity: '.$values['quantity'].'<br>'; 
-              $price = get_post_meta($values['product_id'] , '_price', true);
-              echo "  Price: ".$price."<br>";
-
-
-          }*/ 
 }
 }
-add_action('init', 'my_init');
-/*
-add_action( 'woocommerce_review_order_after_order_total', 'my_custom_fields' );
-function my_custom_fields(){
-    global $woocommerce;
-	    $items = $woocommerce->cart->get_cart();
-	    echo '<pre>';
-	    //print_r($items);
-	    echo '</pre>';
-	    echo '<div>';
-	        foreach($items as $item => $values) { 
-	        	echo 'Name: '.$values["name"];
-	        	echo 'OLCC: '.$values["olcc"];
-	        	echo 'Phone: '.$values["phone"];
-
-	        }
-	    echo '</div>';
-
-}
-*/  
 add_action('woocommerce_after_checkout_billing_form', 'fields_before_order_details');
-//function
 function fields_before_order_details(){
 	global $woocommerce;
-	    $items = $woocommerce->cart->get_cart();
-	    echo '<pre>';
-	    //print_r($items);
-	    echo '</pre>';
-	    echo '<div class="custom-checkout-form"><ul>';
-	        foreach($items as $item => $values) { 
-	        	echo '<li>Name: '.$values["name"].'</li>';
-	        	echo '<li>OLCC: '.$values["olcc"].'</li>';
-	        	echo '<li>Phone: '.$values["phone"].'</li>';
+    $items = $woocommerce->cart->get_cart();
+    echo '<div class="custom-checkout-form"><ul>';
+    foreach($items as $item => $values) { 
+    	echo '<li>Name: '.$values["name"].'</li>';
+    	echo '<li>OLCC: '.$values["olcc"].'</li>';
+    	echo '<li>Phone: '.$values["phone"].'</li>';
 
-	        }
-	    echo '</ul></div>';
+    }
+    echo '</ul></div>';
 }
-
-/*add_filter( 'woocommerce_billing_fields', 'my_optional_fields' );
-
-function my_optional_fields() {
-	echo 'helllo';
-}*/
 ?>
